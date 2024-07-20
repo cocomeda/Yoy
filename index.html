@@ -10,18 +10,26 @@
   </style>
 </head>
 <body>
-  <div id="data-container"></div>
-
+  <div id="data-container">Loading...</div>
+  
   <script>
     // Google Apps ScriptのウェブアプリケーションのURLをここに入力
     var scriptUrl = 'https://script.google.com/macros/s/AKfycbx1ETJrYoICIr0sP0V1jgkacWLEvprUKDkP52jjemYx7V4pgbsIVzKkM9Asm37pXAo0/exec';
 
     fetch(scriptUrl)
-      .then(response => response.text())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
       .then(html => {
         document.getElementById('data-container').innerHTML = html;
       })
-      .catch(error => console.error('Error fetching data:', error));
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        document.getElementById('data-container').innerHTML = 'Error loading data';
+      });
   </script>
 </body>
 </html>
